@@ -20,8 +20,8 @@ from sklearn.externals import joblib
 
 pd.options.mode.chained_assignment = None
 #seperate my input file based on comma, and attribute the values in the following names
-f2 = open('chessData.txt', 'r')
-f1 = open('new.txt','w')
+f2 = open('King-Rook-King.data.txt', 'r')
+f1 = open('K-R-K.data.txt','w')
 for line in f2:
         for ch in line[:12]:
             if (ch is 'a'):
