@@ -44,4 +44,4 @@ rounded = [round(x[0]) for x in predictions]
 print(rounded)
 #in prediction  we are using a sigmoid activation function on the output layer
 #'target layer' so the predictions will be in the reange
-# draw and between zero and ten.
+# draw or between zero and ten.
