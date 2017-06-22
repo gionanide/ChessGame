@@ -96,6 +96,25 @@ seed = 7
 scoring = 'accuracy'
 
 # Spot Check Algorithms
+
+#Implementation in order to measure algorithms' execution time
+def compare_Algorithms():
+    return model_selection.cross_val_score(model, X_train, Y_train, cv=kfold, scoring=scoring)
+
+#this funtion's attributes is the speed and the acuraccy of every algorithm that the user have run
+#attributes is an array with alla the speeds and acuraccies
+def Hurwicz(names,times,results,a):
+    decision = []
+    i=0
+    maxTime = 1#because I want to take the smallest time , but in the end the biggest decesion
+    #so I make all the times 1-time , so i want to take the biggest of these elements
+    for y in range (len(names)):
+        x = a*(maxTime - times[y]) + (1-a)*results[y]
+        decision.append(x)
+    index, value = max(enumerate(decision), key=operator.itemgetter(1))
+    print('The most suitable algorithm for you is:')
+    print(names[index])
+
 models = []
 models.append(('LR', LogisticRegression()))
 models.append(('LDA', LinearDiscriminantAnalysis()))
@@ -104,16 +123,29 @@ models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
 models.append(('SVM', SVC()))
 # evaluate each model in turn
+results1 = []
+names1 = []
+times1 = []
 results = []
 names = []
+time = []
+print('Algorithm:     accuracy     time')
 for name, model in models:
-	kfold = model_selection.KFold(n_splits=10, random_state=seed)
-	cv_results = model_selection.cross_val_score(model, X_train, Y_train, cv=kfold, scoring=scoring)
-	results.append(cv_results)
-	names.append(name)
-	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-	print(msg)
-
+    kfold = model_selection.KFold(n_splits=10, random_state=seed)
+    cv_results = compare_Algorithms()
+    if __name__ == "__main__":
+        setup = "from __main__ import cv_results"
+        time = timeit.timeit('cv_results', setup=setup)
+    results.append(cv_results)
+    names.append(name)
+    msg = "%s:           %f      %f" % (name, cv_results.mean(),time)
+    results1.append(cv_results.mean())
+    names1.append(name)
+    times1.append(time)
+    print(msg)
+print('Give me how much you prefer speed from acuraccy (with 1 you prefer only speed and with 0 only acuraccy)')
+a = input()
+Hurwicz(names1,times1,results1,a)
 
 
 
