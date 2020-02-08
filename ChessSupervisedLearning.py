@@ -101,6 +101,20 @@ scoring = 'accuracy'
 def compare_Algorithms():
     return model_selection.cross_val_score(model, X_train, Y_train, cv=kfold, scoring=scoring)
 
+#this funtion's attributes is the speed and the acuraccy of every algorithm that the user have run
+#attributes is an array with alla the speeds and acuraccies
+def Hurwicz(names,times,results,a):
+    decision = []
+    i=0
+    maxTime = 1#because I want to take the smallest time , but in the end the biggest decesion
+    #so I make all the times 1-time , so i want to take the biggest of these elements
+    for y in range (len(names)):
+        x = a*(maxTime - times[y]) + (1-a)*results[y]
+        decision.append(x)
+    index, value = max(enumerate(decision), key=operator.itemgetter(1))
+    print('The most suitable algorithm for you is:')
+    print(names[index])
+
 models = []
 models.append(('LR', LogisticRegression()))
 models.append(('LDA', LinearDiscriminantAnalysis()))
